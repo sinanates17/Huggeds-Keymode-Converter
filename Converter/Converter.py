@@ -2,7 +2,7 @@ import os
 import configparser
 from math import floor
 import convert
-from note import Note
+from note import Note, TimingPoint, Interval
 
 #Parse the config
 config = configparser.ConfigParser(allow_no_value=True)
@@ -97,16 +97,17 @@ for beatmap in inputs:
                 endTime = int(line.split(',')[5].split(':')[0])
                 sample = line.split(',')[5]
                 sample = sample[sample.find(':'):-1]
-                note = Note(lane,startTime,noteType,hitsound,endTime,sample)
+                note = Note(lane, startTime, noteType, hitsound, endTime, sample)
                 hitObjects.append(note)
                 #print(hitObjects[-1])
         if timingMode:
             if ',' in line:
-                if '1' in line.split(',')[6]:
-                    redPoints.append(line.split(',')) #Create arrays to store information about timing points. Each row is a point, formatted as [time beatLength meter sampleSet sampleIndex volume uninherited effects]
+                point = TimingPoint(*line.split(','))
+                if point.uninherited:
+                    redPoints.append(point) #Create arrays to store information about timing points. Each row is a point, formatted as [time beatLength meter sampleSet sampleIndex volume uninherited effects]
                     #print(redPoints[-1])
-                #elif '0' in line.split(',')[7]:
-                    #greenPoints.append(line.split(','))
+                #elif '0' in point.effects:
+                    #greenPoints.append(point)
         if '[TimingPoints]' in line: #Know to start recording timing point info when the [TimingPoints] section of the .osu is reached.
             timingMode = True
             mappingMode = 0
