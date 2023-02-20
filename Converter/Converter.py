@@ -2,6 +2,7 @@ import os
 import configparser
 from math import floor
 import convert
+from note import Note
 
 #Parse the config
 config = configparser.ConfigParser(allow_no_value=True)
@@ -88,11 +89,12 @@ for beatmap in inputs:
                 lane = floor(int(line.split(',')[0])/(512/inputKeymode))
                 startTime = int(line.split(',')[2])
                 noteType = line.split(',')[3]
-                hitSound = line.split(',')[4]
+                hitsound = line.split(',')[4]
                 endTime = int(line.split(',')[5].split(':')[0])
                 sample = line.split(',')[5]
                 sample = sample[sample.find(':'):-1]
-                hitObjects.append([lane,startTime,noteType,hitSound,endTime,sample]) #Add each hitobject to list containing all hitobjects, formatted as [lane startTime noteType hitSound endTime sample]
+                note = Note(lane,startTime,noteType,hitsound,endTime,sample)
+                hitObjects.append(note)
                 #print(hitObjects[-1])
         if timingMode:
             if ',' in line:
@@ -114,6 +116,6 @@ for beatmap in inputs:
 
     #Code to write the new hit objects into the output file
     for newNote in newHitObjects:
-        laneNumber = (newNote[0])*(512/outputKeymode)+2
-        output.write(str(laneNumber) + ',192,' + str(newNote[1]) + ',' + str(newNote[2]) + ',' + str(newNote[3]) + ',' + str(newNote[4]) + str(newNote[5]) + '\n')
+        laneNumber = (newNote.lane)*(512/outputKeymode)+2
+        output.write(str(laneNumber) + ',192,' + str(newNote.startTime) + ',' + str(newNote.noteType) + ',' + str(newNote.hitsound) + ',' + str(newNote.endTime) + str(newNote.sample) + '\n')
     output.close()
