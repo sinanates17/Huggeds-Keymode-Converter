@@ -98,7 +98,7 @@ for beatmap in inputs:
                 sample = line.split(',')[5]
                 sample = sample[sample.find(':'):-1]
                 note = Note(lane, startTime, noteType, hitSound, endTime, sample)
-                hitObjects.append(note)
+                hitObjects.append(note) #Add each hitobject to list containing all hitobject
                 #print(hitObjects[-1])
         if timingMode:
             if ',' in line:
