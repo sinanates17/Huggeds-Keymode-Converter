@@ -13,11 +13,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
 
     outObjects = [] #Initialize a list to contain all the converted hitobjects
 
-    #Timing Point format: [time beatLength meter sampleSet sampleIndex volume uninherited effects]
-
     #Convert the conversion key to a list of lists containing output lane numbers
-
-    #print(points)
     newConversionKey = []
     for inLane in conversionKey:
         theLanes = []
@@ -136,7 +132,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                 noJackLanes[note.lane] = laneChoice
 
     if conversionMode == 'jack_alternate':
-        occupiedIntervals = [[] for i in range(outMode)] #Contains a list of intervals in [startTime endTime originLane] format for EVERY output column where future notes CANNOT be placed
+        occupiedIntervals = [[] for i in range(outMode)] #Contains a list of intervals for EVERY output column where future notes CANNOT be placed
         jackConditionals = [[-10000, maxJack,-1] for i in range(inMode)] #Format: [time, currentJackCount, currentOutLane]. Every input lane has a conditional that determines if the next note from that lane will be jacked.
         shieldConditionals = [[-10000, -10000, maxShield,-1] for i in range(inMode)] #Format: [headTime, tailTime currentShieldCount, currentOutLane]. Every input lane has a conditional that determines if the next note from that lane will be shielded
         for note in inObjects:
