@@ -1,10 +1,10 @@
 # Defines a single note
 class Note:
-    def __init__(self, lane, startTime, noteType, hitsound, endTime, sample):
+    def __init__(self, lane, startTime, noteType, hitSound, endTime, sample):
         self.lane = lane
         self.startTime = startTime
         self.noteType = noteType
-        self.hitsound = hitsound
+        self.hitSound = hitSound
         self.endTime = endTime
         self.sample = sample
     
@@ -14,11 +14,11 @@ class Note:
 
     # Lets you do str(note) to get the output of how it should be in the .osu file
     def __str__(self):
-        return f'{note.lane},192,{note.startTime},{note.noteType},{note.hitsound},{note.endTime}{note.sample}'
+        return f'{note.lane},192,{note.startTime},{note.noteType},{note.hitSound},{note.endTime}{note.sample}'
 
     # Function that returns a clone of the note in a different lane
     def newNoteInLane(self, lane):
-    	return Note(lane, self.startTime, self.noteType, self.hitsound, self.endTime, self.sample)
+    	return Note(lane, self.startTime, self.noteType, self.hitSound, self.endTime, self.sample)
   
     # Functions to check if it is rice or ln
     def isRice(self):
@@ -37,7 +37,7 @@ class TimingPoint:
         self.sampleIndex = sampleIndex 
         self.volume = volume
         # Convert inheritedness to bool
-        self.red = False if uninherited == '0' else True
+        self.uninherited = False if uninherited == '0' else True
         self.effects = effects
 
     # Define representation so you can do print(point)
