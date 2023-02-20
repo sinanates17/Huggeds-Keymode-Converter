@@ -5,7 +5,6 @@ Instructions:
 
 - Windows seems to recognize this as a virus. Disable virus scanning if it won't let you download.
 - Customize the config.ini in a text editor like notepad to your liking.
-- Delete the .gitkeep file in the Input folder
 - Copy the .osu files you want to convert into the Inputs folder.
 - Run the .exe
 - Converts are in the Outputs folder! Drag them back into the beatmap folder and you should be able to play it!
