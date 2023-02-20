@@ -37,14 +37,14 @@ class TimingPoint:
         self.sampleIndex = sampleIndex 
         self.volume = volume
         # Convert inheritedness to bool
-        self.uninherited = False if uninherited == '0' else True
+        self.red = False if uninherited == '0' else True
         self.effects = effects
 
     # Define representation so you can do print(point)
     def __repr__(self):
         return str(self.__dict__)
 
-# Defines an interval, YET TO BE IMPLEMENTED
+# Defines an interval
 class Interval:
     def __init__(self, startTime, endTime, originLane):
         self.startTime = startTime
