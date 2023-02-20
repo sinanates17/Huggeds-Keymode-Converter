@@ -32,6 +32,10 @@ inputs = os.listdir(inputDirectory)
 
 #Loop through every difficulty in the Input folder and create converts in the Output folder
 for beatmap in inputs:
+    #Ignore files that dont end in .osu
+    if not beatmap.endswith(".osu"):
+        continue
+
     reference = open(inputDirectory + beatmap,"r", encoding="utf8")
 
     #Find the keymode to be converted
