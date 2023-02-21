@@ -13,7 +13,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
 
     outObjects = [] #Initialize a list to contain all the converted hitobjects
 
-    #Convert the conversion key to a list of lists containing output lane numbers
+    #Convert the conversion key to a list of lists containing output lanes
     newConversionKey = []
     for inLane in conversionKey:
         theLanes = []
