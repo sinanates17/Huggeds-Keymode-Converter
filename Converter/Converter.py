@@ -28,7 +28,20 @@ buffAmount = cfg.getfloat('Mapping','buff')
 #Initialize stuffs
 inputDirectory = os.getcwd() + '/Input/'
 outputDirectory = os.getcwd() + '/Output/'
-beatmaps = [f for f in os.listdir(inputDirectory) if f.endswith('.osu')] #Ignore files that dont end in .osu
+
+beatmaps = []
+for f in os.listdir(inputDirectory)
+    # Skip if not file
+    if not os.path.isfile(f): 
+        continue
+
+    # Add all .osu files
+    if f.endswith(".osu"):
+        beatmaps.append(f)
+
+    # Skip .osz for now, maybe add support later
+    elif f.endswith(".osz"):
+        pass
 
 #Loop through every difficulty in the Input folder and create converts in the Output folder
 for i,beatmap in enumerate(beatmaps):
