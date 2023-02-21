@@ -10,17 +10,17 @@ class Note:
     
     # Define representation so you can do print(note)
     def __repr__(self):
-    	return str(self.__dict__)
-
-    # Lets you do str(note) to get the output of how it should be in the .osu file
+        return str(self.__dict__)
+            
+        # Lets you do str(note) to get the output of how it should be in the .osu file
     def __str__(self):
-        return f'{note.lane},192,{note.startTime},{note.noteType},{note.hitSound},{note.endTime}{note.sample}'
+        return f'{self.lane},192,{self.startTime},{self.noteType},{self.hitSound},{self.endTime}{self.sample}'
 
-    # Function that returns a clone of the note in a different lane
+        # Function that returns a clone of the note in a different lane
     def newNoteInLane(self, lane):
-    	return Note(lane, self.startTime, self.noteType, self.hitSound, self.endTime, self.sample)
-  
-    # Functions to check if it is rice or ln
+        return Note(lane, self.startTime, self.noteType, self.hitSound, self.endTime, self.sample)
+    
+        # Functions to check if it is rice or ln
     def isRice(self):
         return self.noteType != '128'
 
