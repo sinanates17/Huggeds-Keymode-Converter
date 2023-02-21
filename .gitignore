@@ -1,2 +1,10 @@
+# python cache
 **/__pycache__
+
+# osu beatmaps
 *.osu
+
+# pyinstaller stuff
+**/build/
+**/dist/
+**/Converter.spec

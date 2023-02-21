@@ -28,13 +28,25 @@ buffAmount = cfg.getfloat('Mapping','buff')
 #Initialize stuffs
 inputDirectory = os.getcwd() + '/Input/'
 outputDirectory = os.getcwd() + '/Output/'
-inputs = os.listdir(inputDirectory)
+
+beatmaps = []
+for f in os.listdir(inputDirectory)
+    # Skip if not file
+    if not os.path.isfile(f): 
+        continue
+
+    # Add all .osu files
+    if f.endswith(".osu"):
+        beatmaps.append(f)
+
+    # Skip .osz for now, maybe add support later
+    elif f.endswith(".osz"):
+        pass
 
 #Loop through every difficulty in the Input folder and create converts in the Output folder
-for beatmap in inputs:
-    #Ignore files that dont end in .osu
-    if not beatmap.endswith(".osu"):
-        continue
+for i,beatmap in enumerate(beatmaps):
+    #Print progress
+    print(f'Converting map {i+1}/{len(beatmaps)}')
 
     reference = open(inputDirectory + beatmap,"r", encoding="utf8")
 
@@ -98,7 +110,7 @@ for beatmap in inputs:
                 sample = line.split(',')[5]
                 sample = sample[sample.find(':'):-1]
                 note = Note(lane, startTime, noteType, hitSound, endTime, sample)
-                hitObjects.append(note)
+                hitObjects.append(note) #Add each hitobject to list containing all hitobject
                 #print(hitObjects[-1])
         if timingMode:
             if ',' in line:
@@ -124,3 +136,5 @@ for beatmap in inputs:
         laneNumber = (newNote.lane)*(512/outputKeymode)+2
         output.write(str(laneNumber) + ',192,' + str(newNote.startTime) + ',' + str(newNote.noteType) + ',' + str(newNote.hitSound) + ',' + str(newNote.endTime) + str(newNote.sample) + '\n')
     output.close()
+
+input("Done! Press enter to exit.")
