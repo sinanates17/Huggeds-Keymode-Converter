@@ -5,25 +5,25 @@ import convert
 from mapObjects import Note, TimingPoint
 
 #Parse the config
-config = configparser.ConfigParser(allow_no_value=True)
-config.read('config.ini')
+cfg = configparser.ConfigParser(allow_no_value=True)
+cfg.read('config.ini')
 
-changeAuthor = config['Metadata']['change_author']
-changeHP = config['Metadata']['change_hp']
-changeOD = config['Metadata']['change_od']
+changeAuthor = cfg['Metadata']['change_author']
+changeHP = cfg['Metadata']['change_hp']
+changeOD = cfg['Metadata']['change_od']
 
-outputKeymode = config.getint('Mapping','target_keymode')
-conversionMode = config['Mapping']['conversion_mode']
-alternateInterval = config.getfloat('Mapping','alternate_interval')
-unjack = config['Mapping']['unjack']
-unjackInterval = config.getfloat('Mapping','unjack_interval')
-maxJack = config.getint('Mapping','max_jack')
-minShieldInterval = config.getfloat('Mapping','min_shield_interval')
-shieldPreserver =  config['Mapping']['shield_preserver']
-shieldThreshold = config.getfloat('Mapping','shield_threshold')
-shieldPreserverInterval = config.getfloat('Mapping','shield_preserver_interval')
-maxShield = config.getint('Mapping','max_shield')
-buffAmount = config.getfloat('Mapping','buff')
+outputKeymode = cfg.getint('Mapping','target_keymode')
+conversionMode = cfg['Mapping']['conversion_mode']
+alternateInterval = cfg.getfloat('Mapping','alternate_interval')
+unjack = cfg['Mapping']['unjack']
+unjackInterval = cfg.getfloat('Mapping','unjack_interval')
+maxJack = cfg.getint('Mapping','max_jack')
+minShieldInterval = cfg.getfloat('Mapping','min_shield_interval')
+shieldPreserver =  cfg['Mapping']['shield_preserver']
+shieldThreshold = cfg.getfloat('Mapping','shield_threshold')
+shieldPreserverInterval = cfg.getfloat('Mapping','shield_preserver_interval')
+maxShield = cfg.getint('Mapping','max_shield')
+buffAmount = cfg.getfloat('Mapping','buff')
 
 #Initialize stuffs
 inputDirectory = os.getcwd() + '/Input/'
@@ -47,7 +47,7 @@ for i,beatmap in enumerate(beatmaps):
 
     #Create the active conversion key from the keys in the config
     reference = open(inputDirectory + beatmap,"r",encoding="utf8")
-    preConversionKey = config['Conversion Keys'][str(inputKeymode) + '-' + str(outputKeymode)]
+    preConversionKey = cfg['Conversion Keys'][str(inputKeymode) + '-' + str(outputKeymode)]
     preConversionKey = preConversionKey.split(',')
     conversionKey = [[] for i in range(inputKeymode)]
     counter = 0
