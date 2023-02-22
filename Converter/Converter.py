@@ -30,9 +30,9 @@ inputDirectory = os.getcwd() + '/Input/'
 outputDirectory = os.getcwd() + '/Output/'
 
 beatmaps = []
-for f in os.listdir(inputDirectory)
+for f in os.listdir(inputDirectory):
     # Skip if not file
-    if not os.path.isfile(f): 
+    if not os.path.isfile(inputDirectory + f):
         continue
 
     # Add all .osu files
@@ -102,19 +102,11 @@ for i,beatmap in enumerate(beatmaps):
                 output.write(line)
                 #print(line)
             elif mappingMode == 1:
-                lane = floor(int(line.split(',')[0])/(512/inputKeymode))
-                startTime = int(line.split(',')[2])
-                noteType = line.split(',')[3]
-                hitSound = line.split(',')[4]
-                endTime = int(line.split(',')[5].split(':')[0])
-                sample = line.split(',')[5]
-                sample = sample[sample.find(':'):-1]
-                note = Note(lane, startTime, noteType, hitSound, endTime, sample)
+                note = Note.fromString(line, inputKeymode)
                 hitObjects.append(note) #Add each hitobject to list containing all hitobject
-                #print(hitObjects[-1])
         if timingMode:
             if ',' in line:
-                point = TimingPoint(*line.split(','))
+                point = TimingPoint.fromString(line)
                 if point.uninherited:
                     redPoints.append(point) #Create arrays to store information about timing points. Each row is a point.
                     #print(redPoints[-1])
@@ -134,7 +126,7 @@ for i,beatmap in enumerate(beatmaps):
     #Code to write the new hit objects into the output file
     for newNote in newHitObjects:
         laneNumber = (newNote.lane)*(512/outputKeymode)+2
-        output.write(str(laneNumber) + ',192,' + str(newNote.startTime) + ',' + str(newNote.noteType) + ',' + str(newNote.hitSound) + ',' + str(newNote.endTime) + str(newNote.sample) + '\n')
+        output.write(f'{laneNumber},192,{newNote.startTime},{newNote.noteType},{newNote.hitSound},{newNote.endTime}{newNote.sample}\n')
     output.close()
 
 input("Done! Press enter to exit.")

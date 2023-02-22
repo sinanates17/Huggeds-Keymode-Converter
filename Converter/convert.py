@@ -57,7 +57,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
             if allowedLanes: #Empty lists are false. Only map this note if there are available lanes
                 laneChoice = random.choice(allowedLanes)
                 #print(allowedLanes)
-                newNote = note.newNoteInLane(laneChoice)
+                newNote = note.copyToLane(laneChoice)
                 outObjects.append(newNote)
 
 
@@ -112,7 +112,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
             if allowedLanes: #Empty lists are false. Only map this note if there are available lanes
                 laneChoice = random.choice(allowedLanes)
                 #print(allowedLanes)
-                newNote = note.newNoteInLane(laneChoice)
+                newNote = note.copyToLane(laneChoice)
                 outObjects.append(newNote)
 
 
@@ -177,7 +177,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                     jackConditionals[note.lane][0] = note.startTime
                     jackConditionals[note.lane][1] = 1 
                     jackConditionals[note.lane][2] = laneChoice
-                    newNote = note.newNoteInLane(laneChoice)
+                    newNote = note.copyToLane(laneChoice)
                     outObjects.append(newNote)
 
 
@@ -187,7 +187,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                     jackConditionals[note.lane][0] = note.startTime
                     jackConditionals[note.lane][1] += 1
                     jackConditionals[note.lane][2] = laneChoice
-                    newNote = note.newNoteInLane(laneChoice)
+                    newNote = note.copyToLane(laneChoice)
                     outObjects.append(newNote)
 
 
@@ -217,7 +217,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                     jackConditionals[note.lane][0] = note.startTime
                     jackConditionals[note.lane][1] = 1
                     jackConditionals[note.lane][2] = laneChoice
-                    newNote = note.newNoteInLane(laneChoice)
+                    newNote = note.copyToLane(laneChoice)
                     outObjects.append(newNote)
 
                 #If we just mapped a long note that meets the shield threshold, update the shield conditionals for the corresponding input lane
@@ -284,7 +284,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                 if okay:
                     if note.isRice():
                         if buffThreshold >= 1:
-                            newNote = note.newNoteInLane(possibility)
+                            newNote = note.copyToLane(possibility)
                             extraOutObjects.append(newNote)
                             #print(newNote)
                             buffThreshold -= 1.0
@@ -297,7 +297,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                     #Repeat but with long notes
                     if note.isLN():
                         if buffThreshold >= 1:
-                            newNote = note.newNoteInLane(possibility)
+                            newNote = note.copyToLane(possibility)
                             extraOutObjects.append(newNote)
                             #print(newNote)
                             buffThreshold -= 1.0
