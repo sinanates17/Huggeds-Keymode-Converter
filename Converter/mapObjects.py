@@ -7,6 +7,10 @@ class Note:
         self.hitSound = hitSound
         self.endTime = endTime
         self.sample = sample
+        if self.isLN():
+            self.length = endTime - startTime
+        else:
+            self.length = 0
     
     # Define representation so you can do print(note)
     def __repr__(self):
@@ -27,6 +31,14 @@ class Note:
 
     def isLN(self):
         return self.noteType == '128'
+    
+     # Fuctions to check whether this note forms a jack or a shield with another note
+    def isJacked(self, anotherNote, threshold):
+        return (self.startTime >= anotherNote.startTime and self.startTime <= anotherNote.startTime + threshold) and (self.lane == anotherNote.lane)
+
+    def isShielded(self, anotherNote, capThreshold, bodyThreshold):
+        return (anotherNote.isLN()) and (anotherNote.length >= bodyThreshold) and (self.startTime <= anotherNote.endTime + capThreshold and self.startTime >= anotherNote.endTime) and (self.lane == anotherNote.lane)
+        #      ^Preceding note must be LN  ^Preceding LN needs to be long enough   ^This note is within the "shield window" of the previous note
 
     # Lets you create a note from a string
     @classmethod
@@ -80,3 +92,23 @@ class Interval:
     # Define representation so you can do print(interval)
     def __repr__(self):
         return str(self.__dict__)
+    
+    class Chord:
+    #A chord needs to be initialized with a note
+    def __init__(self, firstNote, threshold):
+        self.startTime = firstNote.startTime + threshold
+        self.endTime = firstNote.startTime + self.threshold
+        self.notes = [firstNote]
+        self.size = 1
+        self.threshold = threshold
+    
+    # Define representation so you can do print(chord)
+    def __repr__(self):
+        return str(self.__dict__)
+
+    # Function to add a Note object into the chord's notes list
+    def addNote(self, newNote):
+        self.notes.append(newNote)
+        self.endTime = newNote.startTime + self.threshold
+        self.size += 1
+
