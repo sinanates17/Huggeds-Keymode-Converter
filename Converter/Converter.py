@@ -38,7 +38,6 @@ for f in os.listdir(inputDirectory):
     # Add all .osu files
     if f.endswith(".osu"):
         beatmaps.append(f)
-        print(f)
 
     # Skip .osz for now, maybe add support later
     elif f.endswith(".osz"):
