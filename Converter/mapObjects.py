@@ -69,13 +69,13 @@ class Interval:
     
     class Chord:
     #A chord needs to be initialized with a note
-    def __init__(self, firstNote, threshold):
-        self.startTime = firstNote.startTime + threshold
+    def __init__(self, firstNote):
+        self.threshold = 30
+        self.startTime = firstNote.startTime
         self.endTime = firstNote.startTime + self.threshold
         self.notes = [firstNote]
         self.size = 1
-        self.threshold = threshold
-    
+        
     # Define representation so you can do print(chord)
     def __repr__(self):
         return str(self.__dict__)
@@ -83,6 +83,5 @@ class Interval:
     # Function to add a Note object into the chord's notes list
     def addNote(self, newNote):
         self.notes.append(newNote)
-        self.endTime = newNote.startTime + self.threshold
         self.size += 1
 
