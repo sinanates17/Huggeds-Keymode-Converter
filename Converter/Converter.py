@@ -1,6 +1,5 @@
 import os
 import configparser
-from math import floor
 import convert
 from mapObjects import Note, TimingPoint
 
