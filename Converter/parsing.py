@@ -55,7 +55,7 @@ def parseMap(reference, author, HP, OD):
 
         elif 'Version:' in line:
             outputHead += f'{line[0:-1]} To {{keymode}}K\n'
-            
+
         else:
             # Write everything outside of HitObjects to output
             outputHead += line
