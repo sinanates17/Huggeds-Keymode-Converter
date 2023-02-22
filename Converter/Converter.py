@@ -1,6 +1,5 @@
 import os
 import configparser
-from math import floor
 import convert
 from mapObjects import Note, TimingPoint
 
@@ -46,7 +45,7 @@ for f in os.listdir(inputDirectory):
 #Loop through every difficulty in the Input folder and create converts in the Output folder
 for i,beatmap in enumerate(beatmaps):
     #Print progress
-    print(f'Converting map {i+1}/{len(beatmaps)}')
+    print(f'Converting map {i+1}/{len(beatmaps)} | {beatmap.strip(".osu")}')
 
     reference = open(inputDirectory + beatmap,"r", encoding="utf8")
 
