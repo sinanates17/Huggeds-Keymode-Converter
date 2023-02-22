@@ -12,20 +12,38 @@ class Note:
     def __repr__(self):
         return str(self.__dict__)
             
-        # Lets you do str(note) to get the output of how it should be in the .osu file
+    # Lets you do str(note) to get the output of how it should be in the .osu file
+    # !! Currently doesnt work correctly !!
     def __str__(self):
         return f'{self.lane},192,{self.startTime},{self.noteType},{self.hitSound},{self.endTime}{self.sample}'
 
-        # Function that returns a clone of the note in a different lane
-    def newNoteInLane(self, lane):
+    # Function that returns a clone of the note in a different lane
+    def copyToLane(self, lane):
         return Note(lane, self.startTime, self.noteType, self.hitSound, self.endTime, self.sample)
     
-        # Functions to check if it is rice or ln
+    # Functions to check if it is rice or ln
     def isRice(self):
         return self.noteType != '128'
 
     def isLN(self):
         return self.noteType == '128'
+
+    # Lets you create a note from a string
+    @classmethod
+    def fromString(cls, noteString, keymode):
+        # Get properties of note
+        properties = noteString.split(",")
+
+        lane = int(int(properties[0])/(512/keymode))
+        startTime = int(properties[2])
+        noteType = properties[3]
+        hitSound = properties[4]
+        endTime = int(properties[5].split(':')[0])
+        sample = properties[5]
+        sample = sample[sample.find(':'):-1]
+
+        # Create note with properties
+        return cls(lane, startTime, noteType, hitSound, endTime, sample)
 
 # Defines a timing point
 class TimingPoint:
@@ -36,13 +54,21 @@ class TimingPoint:
         self.sampleSet = sampleSet 
         self.sampleIndex = sampleIndex 
         self.volume = volume
-        # Convert inheritedness to bool
-        self.uninherited = False if uninherited == '0' else True
+        self.uninherited = uninherited
         self.effects = effects
 
     # Define representation so you can do print(point)
     def __repr__(self):
         return str(self.__dict__)
+
+    # Lets you create a timing point from a string
+    @classmethod
+    def fromString(cls, noteString):
+        properties = noteString.split(',')
+        # Convert uninheritedness to bool
+        properties[6] = False if properties[6] == '0' else True
+        # Wow timing point~!
+        return cls(*properties)
 
 # Defines an interval
 class Interval:
