@@ -8,3 +8,6 @@
 **/build/
 **/dist/
 **/Converter.spec
+
+# testing stuff
+test/
