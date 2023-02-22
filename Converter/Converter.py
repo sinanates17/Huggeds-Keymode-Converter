@@ -67,7 +67,7 @@ for i,beatmap in enumerate(beatmaps):
         #todo changeAuthor
         #todo changeHP
         #todo changeOD
-        edits = {'keymode': }
+        edits = {'keymode': outputKeymode}
         f.write(outputHead.format(**edits))
 
         # Code to write the new hit objects into the output file
