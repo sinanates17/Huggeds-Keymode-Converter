@@ -18,10 +18,12 @@ class Note:
             
     # Lets you do str(note) to get the output of how it should be in the .osu file
     # !! Currently doesnt work correctly !!
+    '''
     def __str__(self):
         return f'{self.lane},192,{self.startTime},{self.noteType},{self.hitSound},{self.endTime}{self.sample}'
+    '''
 
-    # Function that returns a clone of the note in a different lane
+    # Returns a clone of the note in a different lane
     def copyToLane(self, lane):
         return Note(lane, self.startTime, self.noteType, self.hitSound, self.endTime, self.sample)
     
@@ -32,12 +34,12 @@ class Note:
     def isLN(self):
         return self.noteType == '128'
     
-     # Fuctions to check whether this note forms a jack or a shield with another note
-    def isJacked(self, anotherNote, threshold):
-        return (self.startTime >= anotherNote.startTime and self.startTime <= anotherNote.startTime + threshold) and (self.lane == anotherNote.lane)
+    # Functions to check whether this note forms a jack or a shield with another note
+    def isJacked(self, other, threshold):
+        return (self.startTime >= other.startTime and self.startTime <= other.startTime + threshold) and (self.lane == other.lane)
 
-    def isShielded(self, anotherNote, capThreshold, bodyThreshold):
-        return (anotherNote.isLN()) and (anotherNote.length >= bodyThreshold) and (self.startTime <= anotherNote.endTime + capThreshold and self.startTime >= anotherNote.endTime) and (self.lane == anotherNote.lane)
+    def isShielded(self, other, capThreshold, bodyThreshold):
+        return (other.isLN()) and (other.length >= bodyThreshold) and (self.startTime <= other.endTime + capThreshold and self.startTime >= other.endTime) and (self.lane == other.lane)
         #      ^Preceding note must be LN  ^Preceding LN needs to be long enough   ^This note is within the "shield window" of the previous note
 
     # Lets you create a note from a string
@@ -92,21 +94,27 @@ class Interval:
     # Define representation so you can do print(interval)
     def __repr__(self):
         return str(self.__dict__)
-    
+
+# Defines a chord of multiple notes
 class Chord:
-    #A chord needs to be initialized with a note
-    def __init__(self, firstNote):
+    def __init__(self):
         self.threshold = 30
-        self.startTime = firstNote.startTime
-        self.endTime = firstNote.startTime + self.threshold
-        self.notes = [firstNote]
-        self.size = 1
+        self.startTime = None
+        self.endTime = None
+        self.notes = []
+        self.size = 0
         
     # Define representation so you can do print(chord)
     def __repr__(self):
         return str(self.__dict__)
 
-    # Function to add a Note object into the chord's notes list
-    def addNote(self, newNote):
-        self.notes.append(newNote)
+    # Add a Note object into the chord's notes list
+    def addNote(self, note):
+        # Check if note is earliest
+        if startTime is None or note.startTime < startTime:
+            self.startTime = note.startTime
+            self.endTime = note.startTime + self.threshold
+
+        # Add note to chord
+        self.notes.append(note)
         self.size += 1
