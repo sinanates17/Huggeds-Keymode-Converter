@@ -53,7 +53,7 @@ for i,beatmap in enumerate(beatmaps):
 
     # Parse the map for its stuff
     with open(inputDirectory + beatmap, "r", encoding="utf8") as f:
-        inputKeymode, redPoints, hitObjects, toWrite = parsing.parseMap(f, changeAuthor, changeHP, changeOD)
+        inputKeymode, redPoints, hitObjects, outputHead = parsing.parseMap(f, changeAuthor, changeHP, changeOD)
 
     # Parse the conversion key
     conversionKey = parsing.parseConversionKey(cfg['Conversion Keys'], inputKeymode, outputKeymode)
@@ -63,15 +63,15 @@ for i,beatmap in enumerate(beatmaps):
 
     # Start writing metadata into the output difficulty
     filename = beatmap[0:-4] + " To " + str(outputKeymode) + "K.osu" #Set the filename for the converted difficulty
-    with open(outputDirectory + filename,"w", encoding="utf8") as output:
+    with open(outputDirectory + filename,"w", encoding="utf8") as f:
         #todo changeAuthor
         #todo changeHP
         #todo changeOD
-        output.write(toWrite.format(outputKeymode=outputKeymode))
+        f.write(outputHead.format(outputKeymode=outputKeymode))
 
         # Code to write the new hit objects into the output file
         for newNote in newHitObjects:
             laneNumber = (newNote.lane)*(512/outputKeymode)+2
-            output.write(f'{laneNumber},192,{newNote.startTime},{newNote.noteType},{newNote.hitSound},{newNote.endTime}{newNote.sample}\n')
+            f.write(f'{laneNumber},192,{newNote.startTime},{newNote.noteType},{newNote.hitSound},{newNote.endTime}{newNote.sample}\n')
 
 input("Done! Press enter to exit.")

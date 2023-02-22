@@ -28,30 +28,30 @@ def parseMap(reference, changeAuthor, changeHP, changeOD):
     redPoints = []
     greenPoints = []
     hitObjects = []
-    toWrite = ''
+    outputHead = ''
 
     # By the end of this for loop, everything until the [HitObjects] section in the output file is written, and all the timing points and hit objects are stored in lists
     for line in reference.readlines():
         '''if 'Creator:' in line: #Change the beatmap author if indicated in the config
-            toWrite += 'Creator:{changeAuthor}\n'
+            outputHead += 'Creator:{changeAuthor}\n'
         elif 'HPDrainRate:' in line: #Change the beatmap HP if indicated in the config
-            toWrite += 'HPDrainRate:{changeHP}\n'
+            outputHead += 'HPDrainRate:{changeHP}\n'
         elif 'OverallDifficulty:' in line: #Change the beatmap OD if indicated in the config
-            toWrite += 'OverallDifficulty:{changeOD}\n'''
+            outputHead += 'OverallDifficulty:{changeOD}\n'''
         if 'Creator:' in line and changeAuthor is not None: #Change the beatmap author if indicated in the config
-            toWrite += f'Creator:{changeAuthor}\n'
+            outputHead += f'Creator:{changeAuthor}\n'
         elif 'HPDrainRate:' in line and changeHP is not None: #Change the beatmap HP if indicated in the config
-            toWrite += f'HPDrainRate:{changeHP}\n'
+            outputHead += f'HPDrainRate:{changeHP}\n'
         elif 'OverallDifficulty:' in line and changeOD is not None: #Change the beatmap OD if indicated in the config
-            toWrite += f'OverallDifficulty:{changeOD}\n'
+            outputHead += f'OverallDifficulty:{changeOD}\n'
         elif 'CircleSize:' in line:
             inputKeymode = int(line.strip('CircleSize:'))
-            toWrite += 'CircleSize:{outputKeymode}\n'
+            outputHead += 'CircleSize:{outputKeymode}\n'
         elif 'Version:' in line:
-            toWrite += f'{line[0:-1]} To {{outputKeymode}}K\n'
+            outputHead += f'{line[0:-1]} To {{outputKeymode}}K\n'
         else:
             if mappingMode == 0:
-                toWrite += line
+                outputHead += line
                 #print(line)
             elif mappingMode == 1:
                 note = Note.fromString(line, inputKeymode)
@@ -71,4 +71,4 @@ def parseMap(reference, changeAuthor, changeHP, changeOD):
             mappingMode = 1
             timingMode = False
 
-    return inputKeymode, redPoints, hitObjects, toWrite
+    return inputKeymode, redPoints, hitObjects, outputHead
