@@ -9,7 +9,7 @@ def establishBeatLength(note, points):
         else:
             return 150.0
 
-def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, keepShield, shieldThreshold, shieldInterval, maxShield, buffAmount):
+def convertMap(inObjects, points, inMode, outMode, conversionMode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, keepShield, shieldThreshold, shieldInterval, maxShield, buffAmount):
 
     outObjects = [] #Initialize a list to contain all the converted hitobjects
 
