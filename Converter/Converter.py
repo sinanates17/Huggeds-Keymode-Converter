@@ -1,6 +1,5 @@
 import os
 import configparser
-from math import floor
 import convert
 import parsing
 
@@ -48,8 +47,8 @@ for f in os.listdir(inputDirectory):
 
 # Loop through every difficulty in the Input folder and create converts in the Output folder
 for i,beatmap in enumerate(beatmaps):
-    # Print progress
-    print(f'Converting map {i+1}/{len(beatmaps)}')
+    #Print progress
+    print(f'Converting map {i+1}/{len(beatmaps)} | {beatmap.strip(".osu")}')
 
     # Parse the map for its stuff
     with open(inputDirectory + beatmap, "r", encoding="utf8") as f:
