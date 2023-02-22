@@ -2,13 +2,12 @@ from mapObjects import Note, TimingPoint
 
 # Create the active conversion key from the keys in the config
 def parseConversionKey(conversionKeys, inputKeymode, outputKeymode):
-    preConversionKey = conversionKeys[f'{inputKeymode}-{outputKeymode}']
-    preConversionKey = preConversionKey.split(',')
+    rawConversionKey = conversionKeys[f'{inputKeymode}-{outputKeymode}'].split(',')
 
     conversionKey = [[] for i in range(inputKeymode)]
     counter = 0
     idk = 0
-    for value in preConversionKey:
+    for value in rawConversionKey:
         if '\n' in value:
             conversionKey[idk].append(value[-1])
         else:
@@ -20,9 +19,9 @@ def parseConversionKey(conversionKeys, inputKeymode, outputKeymode):
 
     return conversionKey
 
-def parseMap(reference, changeAuthor, changeHP, changeOD):
+def parseMap(reference, author, HP, OD):
     inputKeymode = None
-    mappingMode = 0
+    mappingMode = False
     timingMode = False
     timingPoints = []
     redPoints = []
@@ -32,43 +31,50 @@ def parseMap(reference, changeAuthor, changeHP, changeOD):
 
     # By the end of this for loop, everything until the [HitObjects] section in the output file is written, and all the timing points and hit objects are stored in lists
     for line in reference.readlines():
-        '''if 'Creator:' in line: #Change the beatmap author if indicated in the config
-            outputHead += 'Creator:{changeAuthor}\n'
-        elif 'HPDrainRate:' in line: #Change the beatmap HP if indicated in the config
-            outputHead += 'HPDrainRate:{changeHP}\n'
-        elif 'OverallDifficulty:' in line: #Change the beatmap OD if indicated in the config
-            outputHead += 'OverallDifficulty:{changeOD}\n'''
-        if 'Creator:' in line and changeAuthor is not None: #Change the beatmap author if indicated in the config
-            outputHead += f'Creator:{changeAuthor}\n'
-        elif 'HPDrainRate:' in line and changeHP is not None: #Change the beatmap HP if indicated in the config
-            outputHead += f'HPDrainRate:{changeHP}\n'
-        elif 'OverallDifficulty:' in line and changeOD is not None: #Change the beatmap OD if indicated in the config
-            outputHead += f'OverallDifficulty:{changeOD}\n'
+        # Add each hitobject to list containing all hitobjects
+        if mappingMode:
+                note = Note.fromString(line, inputKeymode)
+                hitObjects.append(note)
+
+        # Change the beatmap author if indicated in the config
+        elif 'Creator:' in line and author is not None: 
+            outputHead += f'Creator:{author}\n'
+
+        # Change the beatmap HP if indicated in the config
+        elif 'HPDrainRate:' in line and HP is not None: 
+            outputHead += f'HPDrainRate:{HP}\n'
+
+        # Change the beatmap OD if indicated in the config
+        elif 'OverallDifficulty:' in line and OD is not None: 
+            outputHead += f'OverallDifficulty:{OD}\n'
+
+        # Get input keymode from circlesize and leave field to be formatted.
         elif 'CircleSize:' in line:
             inputKeymode = int(line.strip('CircleSize:'))
-            outputHead += 'CircleSize:{outputKeymode}\n'
+            outputHead += 'CircleSize:{keymode}\n'
+
         elif 'Version:' in line:
-            outputHead += f'{line[0:-1]} To {{outputKeymode}}K\n'
+            outputHead += f'{line[0:-1]} To {{keymode}}K\n'
+            
         else:
-            if mappingMode == 0:
-                outputHead += line
-                #print(line)
-            elif mappingMode == 1:
-                note = Note.fromString(line, inputKeymode)
-                hitObjects.append(note) # Add each hitobject to list containing all hitobject
-        if timingMode:
-            if ',' in line:
-                point = TimingPoint.fromString(line)
-                if point.uninherited:
-                    redPoints.append(point) # Create arrays to store information about timing points. Each row is a point.
-                    #print(redPoints[-1])
-                #elif '0' in point.effects:
-                    #greenPoints.append(point)
-        if '[TimingPoints]' in line: # Know to start recording timing point info when the [TimingPoints] section of the .osu is reached.
+            # Write everything outside of HitObjects to output
+            outputHead += line
+
+            # Add each timing point to a list. Only track red points for now
+            if timingMode:
+                if ',' in line:
+                    point = TimingPoint.fromString(line)
+                    if point.uninherited:
+                        redPoints.append(point)
+                    #elif '0' in point.effects:
+                        #greenPoints.append(point)
+
+        # Know to start recording timing point info when the [TimingPoints] section of the .osu is reached, same for hitobjects
+        if '[TimingPoints]' in line: 
             timingMode = True
-            mappingMode = 0
+            mappingMode = False
         if '[HitObjects]' in line:
-            mappingMode = 1
+            mappingMode = True
             timingMode = False
 
     return inputKeymode, redPoints, hitObjects, outputHead
