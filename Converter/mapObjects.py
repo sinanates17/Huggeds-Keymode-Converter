@@ -67,7 +67,7 @@ class Interval:
     def __repr__(self):
         return str(self.__dict__)
     
-    class Chord:
+class Chord:
     #A chord needs to be initialized with a note
     def __init__(self, firstNote):
         self.threshold = 30
