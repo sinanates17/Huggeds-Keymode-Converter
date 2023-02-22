@@ -29,7 +29,7 @@ def parseMap(reference, author, HP, OD):
     hitObjects = []
     outputHead = ''
 
-    # By the end of this for loop, everything until the [HitObjects] section in the output file is written, and all the timing points and hit objects are stored in lists
+    # By the end of this for loop, everything until the [HitObjects] section is returned as a string, and all the timing points and hit objects are stored in lists
     for line in reference.readlines():
         # Add each hitobject to list containing all hitobjects
         if mappingMode:
