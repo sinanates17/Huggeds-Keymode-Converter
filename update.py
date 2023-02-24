@@ -22,6 +22,8 @@ def updater(newVersion):
     os.remove("temp.zip")
 
     for newFile in os.listdir(os.getcwd() + "/Huggeds-Keymode-Converter-" + newVersion):
-        shutil.move(newFile, os.getcwd() + "/" + newFile.split("/")[-1])
+        shutil.copy(os.getcwd() + "/Huggeds-Keymode-Converter-" + newVersion + "/" + newFile, os.getcwd() + "/" + newFile
+                    
+    shutil.rmtree(os.getcwd() + "/Huggeds-Keymode-Converter-" + newVersion)
 
     print("Update Complete! Please press any key to exit then rerun the program.")
