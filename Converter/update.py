@@ -7,19 +7,19 @@ def updater(newVersion):
     dl_link = "https://github.com/sinanates17/Huggeds-Keymode-Converter/archive/refs/tags/" + newVersion + ".zip"
     dl = requests.get(dl_link, allow_redirects=True)
 
-    oneFolderUp = os.getcwd().strip("/" + os.getcwd().split("/")[-1])
+    oneFolderUp = os.getcwd() + "/.."
 
     deletePath = oneFolderUp + "/delete"
 
-    os.makedirs(deletePath)
+    os.makedirs(deletePath, exist_ok = True)
 
     for oldFile in os.listdir():
         shutil.move(oldFile, deletePath + "/" + oldFile)
 
-    open("temp.zip","wb").write(dl.content)
+    open(oneFolderUp + "/temp.zip","wb").write(dl.content)
 
-    with ZipFile("temp.zip",'r') as temp:
-        temp.extractall()
+    with ZipFile(oneFolderUp + "temp.zip",'r') as temp:
+        temp.extractall(oneFolderUp)
         temp.close()
 
     shutil.move("temp.zip", deletePath + "/temp.zip")
