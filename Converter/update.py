@@ -11,7 +11,7 @@ def updater(newVersion):
 
     deletePath = oneFolderUp + "/delete"
 
-    os.makedirs(deletePath)
+    os.makedirs(deletePath, exist_ok = True)
 
     for oldFile in os.listdir():
         shutil.move(oldFile, deletePath + "/" + oldFile)
