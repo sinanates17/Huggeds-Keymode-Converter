@@ -2,7 +2,28 @@ import os
 import configparser
 import convert
 import parsing
+import pip._vendor.requests as requests
 
+#Check if the current verison is up to date, if so, ask the user if they want to auto update
+currentVersion = "osu" #Change this line every time a new release is made
+url = "http://github.com/sinanates17/Huggeds-Keymode-Converter/releases/latest"
+r = requests.get(url, allow_redirects=True)
+latestVersion = r.url.split('/')[-1]
+
+if currentVersion != latestVersion:
+    choice = input("A new release is available, would you like to update? (\"yes\" or \"no\")")
+    while choice != "yes" and choice != "no"
+        choice = input("\"yes\" or \"no\"")
+    if choice == "yes"
+        import sys
+        sys.path.insert(0, os.getcwd().strip("/" + os.getcwd().split("/")[-1])
+        import update
+        update(latestVersion)
+        input()
+        sys.exit()
+    elif choice == "no":
+        pass                        
+                        
 # Parse the config
 cfg = configparser.ConfigParser(allow_no_value=True)
 cfg.read('config.ini')
