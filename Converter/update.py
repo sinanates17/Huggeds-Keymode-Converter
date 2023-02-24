@@ -16,10 +16,10 @@ def updater(newVersion):
     for oldFile in os.listdir():
         shutil.move(oldFile, deletePath + "/" + oldFile)
 
-    open("temp.zip","wb").write(dl.content)
+    open(oneFolderUp + "/temp.zip","wb").write(dl.content)
 
-    with ZipFile("temp.zip",'r') as temp:
-        temp.extractall()
+    with ZipFile(oneFolderUp + "temp.zip",'r') as temp:
+        temp.extractall(oneFolderUp)
         temp.close()
 
     shutil.move("temp.zip", deletePath + "/temp.zip")
