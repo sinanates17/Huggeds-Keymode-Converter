@@ -17,7 +17,6 @@ def updater(newVersion):
 
     with ZipFile(oneFolderUp + "temp.zip",'r') as temp:
         temp.extractall()
-        temp.close()
 
     os.remove("temp.zip")
 
