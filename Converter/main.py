@@ -12,17 +12,16 @@ latestVersion = r.url.split('/')[-1]
 
 if currentVersion != latestVersion:
     choice = input("A new release is available, would you like to update? (\"yes\" or \"no\")")
-    while choice != "yes" and choice != "no"
+    while choice != "yes" and choice != "no":
         choice = input("\"yes\" or \"no\"")
-    if choice == "yes"
+    if choice == "yes":
+        from update import updater
         import sys
-        sys.path.insert(0, os.getcwd().strip("/" + os.getcwd().split("/")[-1])
-        import update
-        update(latestVersion)
+        updater(latestVersion)
         input()
         sys.exit()
     elif choice == "no":
-        pass                        
+        pass                              
                         
 # Parse the config
 cfg = configparser.ConfigParser(allow_no_value=True)
