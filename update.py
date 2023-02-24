@@ -8,7 +8,7 @@ def updater(newVersion):
     dl = requests.get(dl_link, allow_redirects=True)
 
     for oldFile in os.listdir():
-        if os.path.isdir(oldFile)
+        if os.path.isdir(oldFile):
             shutil.rmtree(oldFile)
         else:
             os.remove(oldFile)
@@ -21,7 +21,7 @@ def updater(newVersion):
     os.remove("temp.zip")
 
     for newFile in os.listdir(os.getcwd() + "/Huggeds-Keymode-Converter-" + newVersion):
-        shutil.copy(os.getcwd() + "/Huggeds-Keymode-Converter-" + newVersion + "/" + newFile, os.getcwd() + "/" + newFile
+        shutil.copy(os.getcwd() + "/Huggeds-Keymode-Converter-" + newVersion + "/" + newFile, os.getcwd() + "/" + newFile)
                     
     shutil.rmtree(os.getcwd() + "/Huggeds-Keymode-Converter-" + newVersion)
 
