@@ -3,14 +3,18 @@ from zipfile import ZipFile
 import shutil
 import os
 
-def update(newVersion)
-    dl_link = "https://github.com/sinanates17/Huggeds-Keymode-Converter/archive/refs/tags/" + newNersion + ".zip"
+def updater(newVersion):
+    dl_link = "https://github.com/sinanates17/Huggeds-Keymode-Converter/archive/refs/tags/" + newVersion + ".zip"
     dl = requests.get(dl_link, allow_redirects=True)
 
-    os.makedirs("delete")
+    oneFolderUp = os.getcwd().strip("/" + os.getcwd().split("/")[-1])
+
+    deletePath = oneFolderUp + "/delete"
+
+    os.makedirs(deletePath)
 
     for oldFile in os.listdir():
-        shutil.move(oldFile, "delete/" + oldFile)
+        shutil.move(oldFile, deletePath + "/" + oldFile)
 
     open("temp.zip","wb").write(dl.content)
 
@@ -18,9 +22,11 @@ def update(newVersion)
         temp.extractall()
         temp.close()
 
-    shutil.move("temp.zip", "delete/temp.zip")
+    shutil.move("temp.zip", deletePath + "/temp.zip")
 
     for newFile in os.listdir("Huggeds-Keymode-Converter-" + newVersion):
         shutil.move(newFile, os.getcwd() + "/" + newFile.split("/")[-1])
+
+    shutil.rmtree(deletePath)
 
     print("Update Complete! Please press any key to exit then rerun the program.")
