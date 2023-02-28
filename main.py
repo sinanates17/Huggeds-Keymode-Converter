@@ -107,13 +107,13 @@ for i,beatmap in enumerate(beatmaps):
                                 while True:
                                     line = chart.readline()
                                     if 'Title:' in line:
-                                        theTitle = line.split(':')[-1]
+                                        theTitle = line.split(':')[-1][0:-1]
                                     elif 'Artist:' in line:
-                                        theArtist = line.split(':')[-1]
+                                        theArtist = line.split(':')[-1][0:-1]
                                     elif 'Creator:' in line:
-                                        theCreator = line.split(':')[-1]
+                                        theCreator = line.split(':')[-1][0:-1]
                                     elif 'BeatmapSetID:' in line:
-                                        theSetID = line.split(':')[-1]
+                                        theSetID = line.split(':')[-1][0:-1]
                                         break
                             if theSetID == setID and setID != '-1':
                                 done = True
