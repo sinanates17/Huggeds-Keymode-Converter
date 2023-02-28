@@ -1,4 +1,4 @@
-import pip._vendor.requests as requests
+import requests
 from zipfile import ZipFile
 import shutil
 import os
