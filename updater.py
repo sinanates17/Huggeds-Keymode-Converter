@@ -16,7 +16,7 @@ def checkUpdate(currentVersion):
             choice = input("\"yes\" or \"no\" ").lower()
         if choice == "yes":
             import sys
-            updater(latestVersion)
+            update(latestVersion)
             input()
             sys.exit()
         elif choice == "no":

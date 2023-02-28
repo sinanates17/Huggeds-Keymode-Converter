@@ -7,7 +7,7 @@ import pip._vendor.requests as requests
 
 currentVersion = "osu" #Change this line every time a new release is made
 
-updater.checkUpdate()
+updater.checkUpdate(currentVersion)
                         
 # Parse the config
 cfg = configparser.ConfigParser(allow_no_value=True)
