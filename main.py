@@ -64,7 +64,7 @@ for f in os.listdir(inputDirectory):
         
     # If a beatmap folder is inputted, scan it and add any .osu files to the beatmaps
     elif os.path.isdir(inputDirectory + f):
-        for ff in os.listdir(os.getcwd() +  f):
+        for ff in os.listdir(os.getcwd() + '/' + f):
             if ff.endswith(".osu"):
                 beatmaps.append([ff, inputDirectory + f])
 
