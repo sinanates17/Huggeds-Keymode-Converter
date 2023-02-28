@@ -64,11 +64,12 @@ for f in os.listdir(inputDirectory):
         
     # If a beatmap folder is inputted, scan it and add any .osu files to the beatmaps
     elif os.path.isdir(inputDirectory + f):
-        for ff in os.listdir(os.getcwd() + '/' + f):
+        for ff in os.listdir(inputDirectory + f):
             if ff.endswith(".osu"):
                 beatmaps.append([ff, inputDirectory + f])
 
 # Loop through every difficulty in the Input folder and create converts
+#print(beatmaps)
 for i,beatmap in enumerate(beatmaps):
     #Print progress
     print(f'Converting map {i+1}/{len(beatmaps)} | {beatmap[0].strip(".osu")}')
@@ -83,7 +84,7 @@ for i,beatmap in enumerate(beatmaps):
             inputKeymode, redPoints, hitObjects, outputHead, setID, creator, title, artist = parsing.parseMap(f, changeAuthor, changeHP, changeOD)
 
     elif os.path.isdir(beatmap[1]):
-        with open(inputDirectory + beatmap[1] + "/" + beatmap[0], "r", encoding="utf8") as f:
+        with open(beatmap[1] + "/" + beatmap[0], "r", encoding="utf8") as f:
             inputKeymode, redPoints, hitObjects, outputHead, setID, creator, title, artist = parsing.parseMap(f, changeAuthor, changeHP, changeOD)
 
     # Parse the conversion key
@@ -96,23 +97,31 @@ for i,beatmap in enumerate(beatmaps):
 
     #Try to find the right beatmap folder if autosort is on
     destination = None
-    if autoSort == '1':
+    #print(title)
+    #print(artist)
+    if autoSort == '1' and beatmap[1] == None:
+        #print("check 1")
         for folder in os.listdir(songDir):
             done = False
             if os.path.isdir(songDir + '/' + folder):
                 if title in folder and artist in folder:
+                    #print("check 5")
                     for file in os.listdir(songDir + '/' + folder):
                         if file.endswith('.osu'):
-                            with open(songDir + '/' + folder + '/' + file) as chart:
+                            with open(songDir + '/' + folder + '/' + file, encoding="utf8") as chart:
                                 while True:
                                     line = chart.readline()
                                     if 'Title:' in line:
+                                        #print("check 2")
                                         theTitle = line.split(':')[-1][0:-1]
                                     elif 'Artist:' in line:
+                                        #print("check 3")
                                         theArtist = line.split(':')[-1][0:-1]
                                     elif 'Creator:' in line:
+                                        #print("check 3")
                                         theCreator = line.split(':')[-1][0:-1]
                                     elif 'BeatmapSetID:' in line:
+                                        #print("check 4")
                                         theSetID = line.split(':')[-1][0:-1]
                                         break
                             if theSetID == setID and setID != '-1':
@@ -125,8 +134,10 @@ for i,beatmap in enumerate(beatmaps):
                                 break
                     if done:
                         break
+    #print(destination)
 
     #Move the converted .osus into the proper beatmap folders 
+    #print(beatmap[1] is None)
     if destination != None:
         with open(destination + filename,"w", encoding="utf8") as f:
             #todo changeAuthor
@@ -154,7 +165,7 @@ for i,beatmap in enumerate(beatmaps):
 
     if beatmap[1] != None:
         if os.path.isdir(beatmap[1]):
-            shutil.move(outputDirectory + filename, destination)
+            shutil.move(outputDirectory + filename, beatmap[1])
 
         elif '.osz' in beatmap[1]:
             with zipfile.ZipFile(beatmap[1],"a") as dest:
@@ -163,7 +174,10 @@ for i,beatmap in enumerate(beatmaps):
 
 #After everything, move .oszs and beatmap folders in the Input folder to the Output folder
 for dir in os.listdir(inputDirectory):
-    if '.osz' in dir or os.path.isdir(inputDirectory + dir):
+    if '.osz' in dir:
         shutil.move(inputDirectory + dir, outputDirectory)
-
+        shutil.rmtree(inputDirectory + dir[0:-4])
+for dir in os.listdir(inputDirectory):
+    if os.path.isdir(inputDirectory + dir):
+        shutil.move(inputDirectory + dir, outputDirectory)
 input("Done! Press enter to exit.")
