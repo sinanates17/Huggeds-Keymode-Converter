@@ -152,13 +152,14 @@ for i,beatmap in enumerate(beatmaps):
                 laneNumber = (newNote.lane)*(512/outputKeymode)+2
                 f.write(f'{laneNumber},192,{newNote.startTime},{newNote.noteType},{newNote.hitSound},{newNote.endTime}{newNote.sample}\n')
 
-    if os.path.isdir(beatmap[1]):
-        shutil.move(outputDirectory + filename, destination)
+    if beatmap[1] != None:
+        if os.path.isdir(beatmap[1]):
+            shutil.move(outputDirectory + filename, destination)
 
-    elif '.osz' in beatmap[1]:
-        with zipfile.ZipFile(beatmap[1],"a") as dest:
-            dest.write(outputDirectory + filename, filename)
-            os.remove(outputDirectory + filename)
+        elif '.osz' in beatmap[1]:
+            with zipfile.ZipFile(beatmap[1],"a") as dest:
+                dest.write(outputDirectory + filename, filename)
+                os.remove(outputDirectory + filename)
 
 #After everything, move .oszs and beatmap folders in the Input folder to the Output folder
 for dir in os.listdir(inputDirectory):
