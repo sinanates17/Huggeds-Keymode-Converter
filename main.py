@@ -7,7 +7,7 @@ import pip._vendor.requests as requests
 import zipfile
 import shutil
 
-currentVersion = "osu" #Change this line every time a new release is made
+currentVersion = "v1.1" #Change this line every time a new release is made
 
 updater.checkUpdate(currentVersion)
                         
