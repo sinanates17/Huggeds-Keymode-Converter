@@ -5,7 +5,7 @@ import os
 
 def checkUpdate(currentVersion):
     #Check if the current verison is up to date, if so, ask the user if they want to auto update
-    currentVersion = "osu" #Change this line every time a new release is made
+    currentVersion = "v1.1" #Change this line every time a new release is made
     url = "http://github.com/sinanates17/Huggeds-Keymode-Converter/releases/latest"
     r = requests.get(url, allow_redirects=True)
     latestVersion = r.url.split('/')[-1]
