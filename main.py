@@ -3,14 +3,16 @@ import configparser
 import convert
 import parsing
 import updater
-import pip._vendor.requests as requests
 import zipfile
 import shutil
 
 currentVersion = "v1.1" #Change this line every time a new release is made
 
-updater.checkUpdate(currentVersion)
-                        
+try:
+    updater.checkUpdate(currentVersion)
+except Exception as e:
+    print(f"Something went wrong while updating! Attempting to continue.\n{e}\n")
+
 # Parse the config
 cfg = configparser.ConfigParser(allow_no_value=True)
 cfg.read('config.ini')
