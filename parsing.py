@@ -39,7 +39,6 @@ def parseMap(reference, author, HP, OD):
         # Change the beatmap author if indicated in the config
         elif 'Creator:' in line and author is not None: 
             outputHead += f'Creator:{author}\n'
-            creator = line.split(':')[-1]
 
         # Change the beatmap HP if indicated in the config
         elif 'HPDrainRate:' in line and HP is not None: 
@@ -84,5 +83,7 @@ def parseMap(reference, author, HP, OD):
             artist = line.split(':')[-1]
         if 'BeatmapSetID:' in line:
             setID = line.split(':')[-1]
+        if 'Creator:' in line:
+            creator = line.split(':')[-1]
 
     return inputKeymode, redPoints, hitObjects, outputHead, setID, creator, title, artist
