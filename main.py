@@ -127,7 +127,7 @@ for i,beatmap in enumerate(beatmaps):
                         break
 
     #Move the converted .osus into the proper beatmap folders 
-    if destination != None or beatmap[1] == None:
+    if destination != None:
         with open(destination + filename,"w", encoding="utf8") as f:
             #todo changeAuthor
             #todo changeHP
