@@ -2,7 +2,7 @@ import os
 import configparser
 import convert
 import parsing
-import updater
+#import updater
 #import pip._vendor.requests as requests
 import zipfile
 import shutil
