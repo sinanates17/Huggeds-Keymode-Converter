@@ -3,13 +3,13 @@ import configparser
 import convert
 import parsing
 import updater
-import pip._vendor.requests as requests
+#import pip._vendor.requests as requests
 import zipfile
 import shutil
 
 currentVersion = "v1.1" #Change this line every time a new release is made
 
-updater.checkUpdate(currentVersion)
+#updater.checkUpdate(currentVersion)
                         
 # Parse the config
 cfg = configparser.ConfigParser(allow_no_value=True)
