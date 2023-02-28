@@ -5,9 +5,9 @@
 *.osu
 
 # pyinstaller stuff
-**/build/
-**/dist/
-**/Converter.spec
+build/
+dist/
+*.spec
 
 # testing stuff
 test/
