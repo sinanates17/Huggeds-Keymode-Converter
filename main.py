@@ -11,7 +11,7 @@ currentVersion = "v1.1" #Change this line every time a new release is made
 try:
     updater.checkUpdate(currentVersion)
 except Exception as e:
-    print(f"Something went wrong while updating! Attempting to continue.\n{e}\n")
+    print(f"Something went wrong while updating! Attempting to continue. Try downloading the latest version manually from github.com/sinanates17/Huggeds-Keymode-Converter/releases/latest\n{e}\n")
 
 # Parse the config
 cfg = configparser.ConfigParser(allow_no_value=True)
