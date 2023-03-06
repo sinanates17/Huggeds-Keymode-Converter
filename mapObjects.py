@@ -48,7 +48,7 @@ class Note:
         # Get properties of note
         properties = noteString.split(",")
 
-        lane = int(int(properties[0])/(512/keymode))
+        lane = int(float(properties[0])/(512/keymode))
         startTime = int(properties[2])
         noteType = properties[3]
         hitSound = properties[4]
