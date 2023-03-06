@@ -111,7 +111,7 @@ class Chord:
     # Add a Note object into the chord's notes list
     def addNote(self, note):
         # Check if note is earliest
-        if startTime is None or note.startTime < startTime:
+        if self.startTime is None or note.startTime < self.startTime:
             self.startTime = note.startTime
             self.endTime = note.startTime + self.threshold
 
