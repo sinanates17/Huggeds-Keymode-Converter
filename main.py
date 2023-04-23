@@ -22,6 +22,7 @@ changeOD = cfg['Metadata'].get('change_od')
 if changeOD == '': changeOD = None
 autoSort = cfg['Metadata']['autosort']
 songDir = cfg['Metadata']['songs_folder']
+seed = cfg['Metadata']['seed']
 
 outputKeymode = cfg.getint('Mapping','target_keymode')
 alternateInterval = cfg.getfloat('Mapping','alternate_interval')
@@ -89,7 +90,7 @@ for i,beatmap in enumerate(beatmaps):
     conversionKey = parsing.parseConversionKey(cfg['Conversion Keys'], inputKeymode, outputKeymode)
 
     # Pass all of the timing points, hit objects, and configurable paramaters into the 'convert' method, which returns a list containing all of the hit objects for the output file
-    newHitObjects = convert.convertMap(hitObjects, redPoints, inputKeymode, outputKeymode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, shieldPreserver, shieldThreshold, shieldPreserverInterval, maxShield, buffAmount)
+    newHitObjects = convert.convertMap(hitObjects, redPoints, inputKeymode, outputKeymode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, shieldPreserver, shieldThreshold, shieldPreserverInterval, maxShield, buffAmount, seed)
 
     filename = beatmap[0][0:-4] + " To " + str(outputKeymode) + "K.osu" #Set the filename for the converted difficulty
 
