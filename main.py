@@ -6,12 +6,9 @@ import updater
 import zipfile
 import shutil
 
-currentVersion = "v1.1" #Change this line every time a new release is made
+currentVersion = "v1.1.1" #Change this line every time a new release is made
 
-try:
-    updater.checkUpdate(currentVersion)
-except Exception as e:
-    print(f"Something went wrong while updating! Attempting to continue.\n{e}\n")
+updater.checkUpdate(currentVersion)
 
 # Parse the config
 cfg = configparser.ConfigParser(allow_no_value=True)
@@ -27,7 +24,6 @@ autoSort = cfg['Metadata']['autosort']
 songDir = cfg['Metadata']['songs_folder']
 
 outputKeymode = cfg.getint('Mapping','target_keymode')
-conversionMode = cfg['Mapping']['conversion_mode']
 alternateInterval = cfg.getfloat('Mapping','alternate_interval')
 unjack = cfg['Mapping']['unjack']
 unjackInterval = cfg.getfloat('Mapping','unjack_interval')
@@ -93,7 +89,7 @@ for i,beatmap in enumerate(beatmaps):
     conversionKey = parsing.parseConversionKey(cfg['Conversion Keys'], inputKeymode, outputKeymode)
 
     # Pass all of the timing points, hit objects, and configurable paramaters into the 'convert' method, which returns a list containing all of the hit objects for the output file
-    newHitObjects = convert.convertMap(hitObjects, redPoints, inputKeymode, outputKeymode, conversionMode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, shieldPreserver, shieldThreshold, shieldPreserverInterval, maxShield, buffAmount)
+    newHitObjects = convert.convertMap(hitObjects, redPoints, inputKeymode, outputKeymode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, shieldPreserver, shieldThreshold, shieldPreserverInterval, maxShield, buffAmount)
 
     filename = beatmap[0][0:-4] + " To " + str(outputKeymode) + "K.osu" #Set the filename for the converted difficulty
 
