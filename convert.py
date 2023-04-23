@@ -9,8 +9,10 @@ def establishBeatLength(note, points):
         else:
             return 150.0
 
-def convertMap(inObjects, points, inMode, outMode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, keepShield, shieldThreshold, shieldInterval, maxShield, buffAmount):
+def convertMap(inObjects, points, inMode, outMode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, keepShield, shieldThreshold, shieldInterval, maxShield, buffAmount, seed):
 
+    local_random = random.Random(seed) # initialise randomiser with seed
+    
     outObjects = [] #Initialize a list to contain all the converted hitobjects
 
     #Convert the conversion key to a list of lists containing output lanes
@@ -152,7 +154,7 @@ def convertMap(inObjects, points, inMode, outMode, alternateInterval, maxJack, u
             #print(possibleBuffLanes)
             possibleBuffLanes = [*set(possibleBuffLanes)]
             #print(possibleBuffLanes)
-            random.Random(1).shuffle(possibleBuffLanes)
+            local_random.shuffle(possibleBuffLanes)
             #print(possibleBuffLanes)
             for possibility in possibleBuffLanes:
                 #print(buffThreshold)
