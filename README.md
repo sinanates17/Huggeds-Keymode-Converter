@@ -3,6 +3,7 @@ A configurable osu!mania keymode converter that can convert any beatmap into a h
 
 Instructions:
 
+- Windows seems to recognize this as a virus. Disable virus scanning if it won't let you download.
 - Customize the config.ini in a text editor like notepad to your liking.
 - Delete the .gitkeep file in the Input folder
 - Copy the .osu files you want to convert into the Inputs folder.
