@@ -262,20 +262,22 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                 #print(row)
                 if note.lane in row:
                     possibleBuffLanes = possibleBuffLanes + row
+            #print(possibleBuffLanes)
             possibleBuffLanes = [*set(possibleBuffLanes)]
             #print(possibleBuffLanes)
             random.Random(1).shuffle(possibleBuffLanes)
-            
+            #print(possibleBuffLanes)
             for possibility in possibleBuffLanes:
                 #print(buffThreshold)
                 okay = True
                 for interval in occupiedIntervals[possibility]:
+                    #print(possibility)
                     if note.isRice():
                         if note.startTime >= interval.startTime - unjackTime and note.startTime <= interval.endTime:
                             okay = False
                             break
                     elif note.isLN():
-                        if (note.startTime >= interval.startTime - unjackTime and note.startTime <= interval.endTime) or (note.endTime >= interval.startTime and note.endTime <= interval.endTime):
+                        if ((note.startTime >= interval.startTime - unjackTime and note.startTime <= interval.endTime) or (note.endTime >= interval.startTime and note.endTime <= interval.endTime)) or ((interval.startTime >= note.startTime and interval.startTime <= note.endTime) or (interval.endTime >= note.startTime and interval.endTime <= note.endTime)):
                             okay = False
                             break
 
@@ -289,8 +291,8 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                         else:
                             buffThreshold += buffAmount
                     #add an occupied interval regardless if a note is added or not because there might be future attempts to buff this spot.
-                    newInterval = Interval(note.startTime, note.startTime + unjackTime, -1)
-                    occupiedIntervals[possibility].append(newInterval)
+                        newInterval = Interval(note.startTime, note.startTime + unjackTime, -1)
+                        occupiedIntervals[possibility].append(newInterval)
 
                     #Repeat but with long notes
                     if note.isLN():
@@ -301,8 +303,9 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                             buffThreshold -= 1.0
                         else:
                             buffThreshold += buffAmount
-                    newInterval = Interval(note.startTime, note.endTime + beatLength * minShieldInterval, -1)
-                    occupiedIntervals[possibility].append(newInterval)
+                        newInterval = Interval(note.startTime, note.endTime + beatLength * minShieldInterval, -1)
+                        occupiedIntervals[possibility].append(newInterval)
+                    #print(buffThreshold)
 
         outObjects = outObjects + extraOutObjects
 
