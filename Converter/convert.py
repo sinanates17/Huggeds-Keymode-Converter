@@ -1,13 +1,14 @@
 import random
-from note import note
+from note import Note
 
 #Establish what the current beatLength is
 def establishBeatLength(note, points):
     for point in points:
         if float(point[1]) <= note.startTime:
-            beatLength = float(point[1])
+            return float(point[1])
         else:
-            beatLength = 150.0
+            return 150.0
+
 
 # todo
 '''
@@ -36,7 +37,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
 
     outObjects = [] #Initialize a list to contain all the converted hitobjects
 
-    #HitObject format: [lane startTime noteType hitSound endTime sample]
+    #HitObject format: [lane startTime noteType hitsound endTime sample]
     #Timing Point format: [time beatLength meter sampleSet sampleIndex volume uninherited effects]
 
     #Convert the conversion key to a list of lists containing output lane numbers
@@ -277,7 +278,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
             else:
                 unjackTime = 0
 
-            #HitObject format: [lane startTime noteType hitSound endTime sample]
+            #HitObject format: [lane startTime noteType hitsound endTime sample]
 
             possibleBuffLanes = []
             for row in newConversionKey:
@@ -313,7 +314,7 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                     occupiedIntervals[possibility].append([note.startTime, note.startTime + unjackTime, -1]) #add an occupied interval regardless if a note is added or not because there might be future attempts to buff this spot.
 
                     #Repeat but with long notes
-                    elif note.isLN():
+                    if note.isLN():
                         if buffThreshold >= 1:
                             newNote = note.newNoteInLane(possibility)
                             extraOutObjects.append(newNote)
