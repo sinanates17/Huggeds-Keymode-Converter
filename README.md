@@ -15,3 +15,5 @@ Big Features:
 - Customizability in regards to handling jack patterns and shield patterns
 - Ability to buff the convert (increase the note density) by a configurable amount
 - Ability to customize which lanes from the input chart get mapped to which lanes from the output chart
+
+Thank you for downloading! I just released this. It may be buggy. If you have questions or run into problems, message me on Discord (HuggedToDeath#2456)
