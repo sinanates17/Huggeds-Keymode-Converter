@@ -104,7 +104,7 @@ for beatmap in inputs:
             if ',' in line:
                 point = TimingPoint(*line.split(','))
                 if point.red:
-                    redPoints.append(point) #Create arrays to store information about timing points. Each row is a point, formatted as [time beatLength meter sampleSet sampleIndex volume uninherited effects]
+                    redPoints.append(point) #Create arrays to store information about timing points. Each row is a point.
                     #print(redPoints[-1])
                 #elif '0' in point.effects:
                     #greenPoints.append(point)
