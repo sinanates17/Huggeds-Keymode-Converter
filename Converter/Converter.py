@@ -2,6 +2,7 @@ import os
 import configparser
 from math import floor
 import convert
+from mapObjects import Note, TimingPoint
 
 #Parse the config
 config = configparser.ConfigParser(allow_no_value=True)
@@ -31,6 +32,10 @@ inputs = os.listdir(inputDirectory)
 
 #Loop through every difficulty in the Input folder and create converts in the Output folder
 for beatmap in inputs:
+    #Ignore files that dont end in .osu
+    if not beatmap.endswith(".osu"):
+        continue
+
     reference = open(inputDirectory + beatmap,"r", encoding="utf8")
 
     #Find the keymode to be converted
@@ -92,15 +97,17 @@ for beatmap in inputs:
                 endTime = int(line.split(',')[5].split(':')[0])
                 sample = line.split(',')[5]
                 sample = sample[sample.find(':'):-1]
-                hitObjects.append([lane,startTime,noteType,hitSound,endTime,sample]) #Add each hitobject to list containing all hitobjects, formatted as [lane startTime noteType hitSound endTime sample]
+                note = Note(lane, startTime, noteType, hitSound, endTime, sample)
+                hitObjects.append(note)
                 #print(hitObjects[-1])
         if timingMode:
             if ',' in line:
-                if '1' in line.split(',')[6]:
-                    redPoints.append(line.split(',')) #Create arrays to store information about timing points. Each row is a point, formatted as [time beatLength meter sampleSet sampleIndex volume uninherited effects]
+                point = TimingPoint(*line.split(','))
+                if point.uninherited:
+                    redPoints.append(point) #Create arrays to store information about timing points. Each row is a point.
                     #print(redPoints[-1])
-                #elif '0' in line.split(',')[7]:
-                    #greenPoints.append(line.split(','))
+                #elif '0' in point.effects:
+                    #greenPoints.append(point)
         if '[TimingPoints]' in line: #Know to start recording timing point info when the [TimingPoints] section of the .osu is reached.
             timingMode = True
             mappingMode = 0
@@ -114,6 +121,6 @@ for beatmap in inputs:
 
     #Code to write the new hit objects into the output file
     for newNote in newHitObjects:
-        laneNumber = (newNote[0])*(512/outputKeymode)+2
-        output.write(str(laneNumber) + ',192,' + str(newNote[1]) + ',' + str(newNote[2]) + ',' + str(newNote[3]) + ',' + str(newNote[4]) + str(newNote[5]) + '\n')
+        laneNumber = (newNote.lane)*(512/outputKeymode)+2
+        output.write(str(laneNumber) + ',192,' + str(newNote.startTime) + ',' + str(newNote.noteType) + ',' + str(newNote.hitSound) + ',' + str(newNote.endTime) + str(newNote.sample) + '\n')
     output.close()
