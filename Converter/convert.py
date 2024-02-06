@@ -1,43 +1,18 @@
 import random
-from note import Note
+from note import Note, TimingPoint, Interval
 
-#Establish what the current beatLength is
+# Function to establish what the current beatLength is, taken out of main function because code is repeated
 def establishBeatLength(note, points):
     for point in points:
-        if float(point[1]) <= note.startTime:
-            return float(point[1])
+        if float(point.beatLength) <= note.startTime:
+            return float(point.beatLength)
         else:
             return 150.0
-
-
-# todo
-'''
-#Figure out what lanes are allowed for this note based on allowedLanes and restrictions from other placed notes (e.g within the unjack interval of another note or overlapping with other notes)
-def checkAllowedLanes(note, conversionKey):
-    possibleLanes = conversionKey[note.lane]
-    allowedLanes = []
-
-    #For every lane this note can be placed on based on the coversion key, check if the lane is available by making sure there are no occupied invervals at this time point that have a different origin lane.
-    for outputLane in possibleLanes:
-        okay = True
-        for interval in occupiedIntervals[outputLane]:
-            if note.isRice():
-                if note.startTime >= interval[0] and note.startTime <= interval[1] and interval[2] != note.lane: 
-                    okay = False
-            elif note.isLN():
-                if (note.startTime >= interval[0] and note.startTime <= interval[1] and interval[2] != note.lane) or (note.endTime >= interval[0] and note.endTime <= interval[1] and interval[2] != note.lane): 
-                    okay = False
-        if okay:
-            allowedLanes.append(outputLane)
-
-    return allowedLanes
-'''
 
 def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, maxJack, unjack, unjackInterval, minShieldInterval, conversionKey, keepShield, shieldThreshold, shieldInterval, maxShield, buffAmount):
 
     outObjects = [] #Initialize a list to contain all the converted hitobjects
 
-    #HitObject format: [lane startTime noteType hitsound endTime sample]
     #Timing Point format: [time beatLength meter sampleSet sampleIndex volume uninherited effects]
 
     #Convert the conversion key to a list of lists containing output lane numbers
@@ -74,10 +49,10 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                 okay = True
                 for interval in occupiedIntervals[outputLane]:
                     if note.isRice():
-                        if note.startTime >= interval[0] and note.startTime <= interval[1] and interval[2] != note.lane: 
+                        if note.startTime >= interval.startTime and note.startTime <= interval.endTime and interval.originLane != note.lane: 
                             okay = False
                     elif note.isLN():
-                        if (note.startTime >= interval[0] and note.startTime <= interval[1] and interval[2] != note.lane) or (note.endTime >= interval[0] and note.endTime <= interval[1] and interval[2] != note.lane): 
+                        if (note.startTime >= interval.startTime and note.startTime <= interval.endTime and interval.originLane != note.lane) or (note.endTime >= interval.startTime and note.endTime <= interval.endTime and interval.originLane != note.lane): 
                             okay = False
                 if okay:
                     allowedLanes.append(outputLane)
@@ -92,12 +67,16 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
 
                 #Set restrictions for future notes based on where this note was placed
                 if note.isRice():
-                    occupiedIntervals[laneChoice].append([note.startTime, note.startTime + unjackTime, note.lane])
-                else:
+                    newInterval = Interval(note.startTime, note.startTime + unjackTime, note.lane)
+
+                elif note.isLN():
                     if note.startTime + unjackTime >= note.endTime + (beatLength * minShieldInterval):
-                        occupiedIntervals[laneChoice].append([note.startTime, note.startTime + unjackTime, note.lane])
+                        newInterval = Interval(note.startTime, note.startTime + unjackTime, note.lane)
+
                     elif note.startTime + unjackTime < note.endTime + (beatLength * minShieldInterval):
-                        occupiedIntervals[laneChoice].append([note.startTime, note.endTime + (beatLength * minShieldInterval) - 2, note.lane])
+                         newInterval = Interval(note.startTime, note.endTime + (beatLength * minShieldInterval) - 2, note.lane)
+
+                occupiedIntervals[laneChoice].append(newInterval)
 
     if conversionMode == 'random_nojack':
         noJackLanes = [-1 for i in range(inMode)]
@@ -122,10 +101,10 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                 okay = True
                 for interval in occupiedIntervals[outputLane]:
                     if note.isRice():
-                        if note.startTime >= interval[0] and note.startTime <= interval[1] and interval[2] != note.lane: 
+                        if note.startTime >= interval.startTime and note.startTime <= interval.endTime and interval.originLane != note.lane: 
                             okay = False
                     elif note.isLN():
-                        if (note.startTime >= interval[0] and note.startTime <= interval[1] and interval[2] != note.lane) or (note.endTime >= interval[0] and note.endTime <= interval[1] and interval[2] != note.lane): 
+                        if (note.startTime >= interval.startTime and note.startTime <= interval.endTime and interval.originLane != note.lane) or (note.endTime >= interval.startTime and note.endTime <= interval.endTime and interval.originLane != note.lane): 
                             okay = False
                 if len(possibleLanes) > 1:
                     if outputLane == noJackLanes[note.lane]:
@@ -143,12 +122,16 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
 
                 #Set restrictions for future notes based on where this note was placed
                 if note.isRice():
-                    occupiedIntervals[laneChoice].append([note.startTime, note.startTime + unjackTime, note.lane])
+                    newInterval = Interval(note.startTime, note.startTime + unjackTime, note.lane)
+
                 elif note.isLN():
                     if note.startTime + unjackTime >= note.endTime + (beatLength * minShieldInterval):
-                        occupiedIntervals[laneChoice].append([note.startTime, note.startTime + unjackTime, note.lane])
+                        newInterval = Interval(note.startTime, note.startTime + unjackTime, note.lane)
+
                     elif note.startTime + unjackTime < note.endTime + (beatLength * minShieldInterval):
-                        occupiedIntervals[laneChoice].append([note.startTime, note.endTime + (beatLength * minShieldInterval), note.lane])
+                        newInterval = Interval(note.startTime, note.endTime + (beatLength * minShieldInterval), note.lane)
+
+                occupiedIntervals[laneChoice].append(newInterval)
                 
                 noJackLanes[note.lane] = laneChoice
 
@@ -182,10 +165,10 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                 okay = True
                 for interval in occupiedIntervals[outputLane]:
                     if note.isRice():
-                        if note.startTime >= interval[0] and note.startTime <= interval[1] and interval[2] != note.lane: 
+                        if note.startTime >= interval.startTime and note.startTime <= interval.endTime and interval.originLane != note.lane: 
                             okay = False
                     elif note.isLN():
-                        if (note.startTime >= interval[0] and note.startTime <= interval[1] and interval[2] != note.lane) or (note.endTime >= interval[0] and note.endTime <= interval[1] and interval[2] != note.lane) or (interval[0] >= note.startTime and interval[0] <= note.endTime and interval[2] != note.lane) or (interval[1] >= note.startTime and interval[0] <= note.endTime and interval[2] != note.lane): 
+                        if (note.startTime >= interval.startTime and note.startTime <= interval.endTime and interval.originLane != note.lane) or (note.endTime >= interval.startTime and note.endTime <= interval.endTime and interval.originLane != note.lane) or (interval.startTime >= note.startTime and interval.startTime <= note.endTime and interval.originLane != note.lane) or (interval.endTime >= note.startTime and interval.startTime <= note.endTime and interval.originLane != note.lane): 
                             okay = False
                 if okay:
                     allowedLanes.append(outputLane)
@@ -251,12 +234,17 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
 
                 #Set restrictions for future notes based on where this note was placed
                 if note.isRice():
-                    occupiedIntervals[laneChoice].append([note.startTime-2, note.startTime + unjackTime, note.lane])
+                    newInterval = Interval(note.startTime-2, note.startTime + unjackTime, note.lane)
+
                 elif note.isLN():
                     if note.startTime + unjackTime >= note.endTime + (beatLength * minShieldInterval):
-                        occupiedIntervals[laneChoice].append([note.startTime, note.startTime + unjackTime, note.lane])
+                        newInterval = Interval(note.startTime, note.startTime + unjackTime, note.lane)
+
                     elif note.startTime + unjackTime < note.endTime + (beatLength * minShieldInterval):
-                        occupiedIntervals[laneChoice].append([note.startTime, note.endTime + (beatLength * minShieldInterval), note.lane])
+                        newInterval = Interval(note.startTime, note.endTime + (beatLength * minShieldInterval), note.lane)
+
+                occupiedIntervals[laneChoice].append(newInterval)
+
     #if conversionMode == 'jack_alternate_random':
     #if conversionMode == 'block_alternate':
     #if conversionMode == 'block_alternate_random':
@@ -265,20 +253,13 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
         extraOutObjects = []
         buffThreshold = 1.0
         for note in outObjects:
-            for point in points:
-                if float(point[1]) <= note.startTime:
-                    beatLength = float(point[1])
-                    #print(beatLength)
-                else:
-                    beatLength = 150.0
+            beatLength = establishBeatLength(note, points)
 
             #Set the unjack time interval (ms) based on the BPM if unjack is true
             if unjack == '1':
                 unjackTime = (unjackInterval * beatLength) + 2
             else:
                 unjackTime = 0
-
-            #HitObject format: [lane startTime noteType hitsound endTime sample]
 
             possibleBuffLanes = []
             for row in newConversionKey:
@@ -290,15 +271,15 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
             random.Random(1).shuffle(possibleBuffLanes)
             
             for possibility in possibleBuffLanes:
-                print(buffThreshold)
+                #print(buffThreshold)
                 okay = True
                 for interval in occupiedIntervals[possibility]:
                     if note.isRice():
-                        if note.startTime >= interval[0] - unjackTime and note.startTime <= interval[1]:
+                        if note.startTime >= interval.startTime - unjackTime and note.startTime <= interval.endTime:
                             okay = False
                             break
                     elif note.isLN():
-                        if (note.startTime >= interval[0] - unjackTime and note.startTime <= interval[1]) or (note.endTime >= interval[0] and note.endTime <= interval[1]):
+                        if (note.startTime >= interval.startTime - unjackTime and note.startTime <= interval.endTime) or (note.endTime >= interval.startTime and note.endTime <= interval.endTime):
                             okay = False
                             break
 
@@ -311,7 +292,9 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                             buffThreshold -= 1.0
                         else:
                             buffThreshold += buffAmount
-                    occupiedIntervals[possibility].append([note.startTime, note.startTime + unjackTime, -1]) #add an occupied interval regardless if a note is added or not because there might be future attempts to buff this spot.
+                    #add an occupied interval regardless if a note is added or not because there might be future attempts to buff this spot.
+                    newInterval = Interval(note.startTime, note.startTime + unjackTime, -1)
+                    occupiedIntervals[possibility].append(newInterval)
 
                     #Repeat but with long notes
                     if note.isLN():
@@ -322,7 +305,9 @@ def map(inObjects, points, inMode, outMode, conversionMode, alternateInterval, m
                             buffThreshold -= 1.0
                         else:
                             buffThreshold += buffAmount
-                    occupiedIntervals[possibility].append([note.startTime, note.endTime + beatLength * minShieldInterval, -1])
+                    newInterval = Interval(note.startTime, note.endTime + beatLength * minShieldInterval, -1)
+                    occupiedIntervals[possibility].append(newInterval)
+
         outObjects = outObjects + extraOutObjects
 
         #outObjects.sort(key=lambda x: x[0])
