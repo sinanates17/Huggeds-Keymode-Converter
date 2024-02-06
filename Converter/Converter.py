@@ -28,13 +28,12 @@ buffAmount = config.getfloat('Mapping','buff')
 #Initialize stuffs
 inputDirectory = os.getcwd() + '/Input/'
 outputDirectory = os.getcwd() + '/Output/'
-inputs = os.listdir(inputDirectory)
+beatmaps = [f for f in os.listdir(inputDirectory) if f.endswith('.osu')] #Ignore files that dont end in .osu
 
 #Loop through every difficulty in the Input folder and create converts in the Output folder
-for beatmap in inputs:
-    #Ignore files that dont end in .osu
-    if not beatmap.endswith(".osu"):
-        continue
+for i,beatmap in enumerate(beatmaps):
+    #Print progress
+    print(f'Converting map {i+1}/{len(beatmaps)}')
 
     reference = open(inputDirectory + beatmap,"r", encoding="utf8")
 
@@ -124,3 +123,5 @@ for beatmap in inputs:
         laneNumber = (newNote.lane)*(512/outputKeymode)+2
         output.write(str(laneNumber) + ',192,' + str(newNote.startTime) + ',' + str(newNote.noteType) + ',' + str(newNote.hitSound) + ',' + str(newNote.endTime) + str(newNote.sample) + '\n')
     output.close()
+
+input("Done! Press enter to exit.")
