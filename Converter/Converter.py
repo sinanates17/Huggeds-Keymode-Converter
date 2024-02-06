@@ -2,7 +2,7 @@ import os
 import configparser
 from math import floor
 import convert
-from note import Note, TimingPoint
+from mapObjects import Note, TimingPoint
 
 #Parse the config
 config = configparser.ConfigParser(allow_no_value=True)

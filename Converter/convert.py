@@ -1,5 +1,5 @@
 import random
-from note import Note, TimingPoint, Interval
+from mapObjects import Note, TimingPoint, Interval
 
 # Function to establish what the current beatLength is, taken out of main function because code is repeated
 def establishBeatLength(note, points):
