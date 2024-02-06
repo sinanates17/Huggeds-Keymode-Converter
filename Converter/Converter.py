@@ -2,7 +2,7 @@ import os
 import configparser
 from math import floor
 import convert
-from note import Note, TimingPoint, Interval
+from note import Note, TimingPoint
 
 #Parse the config
 config = configparser.ConfigParser(allow_no_value=True)
@@ -103,7 +103,7 @@ for beatmap in inputs:
         if timingMode:
             if ',' in line:
                 point = TimingPoint(*line.split(','))
-                if point.uninherited:
+                if point.red:
                     redPoints.append(point) #Create arrays to store information about timing points. Each row is a point, formatted as [time beatLength meter sampleSet sampleIndex volume uninherited effects]
                     #print(redPoints[-1])
                 #elif '0' in point.effects:
