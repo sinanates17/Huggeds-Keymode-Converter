@@ -17,3 +17,5 @@ Big Features:
 - Ability to customize which lanes from the input chart get mapped to which lanes from the output chart
 
 Thank you for downloading! I just released this. It may be buggy. If you have questions or run into problems, message me on Discord (HuggedToDeath#2456)
+
+Also obligatory not all maps will convert well no matter how much you mess with the config. That's just the limitation of automatic mapping.
