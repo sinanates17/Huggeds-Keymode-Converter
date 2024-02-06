@@ -93,17 +93,17 @@ for beatmap in inputs:
                 lane = floor(int(line.split(',')[0])/(512/inputKeymode))
                 startTime = int(line.split(',')[2])
                 noteType = line.split(',')[3]
-                hitsound = line.split(',')[4]
+                hitSound = line.split(',')[4]
                 endTime = int(line.split(',')[5].split(':')[0])
                 sample = line.split(',')[5]
                 sample = sample[sample.find(':'):-1]
-                note = Note(lane, startTime, noteType, hitsound, endTime, sample)
+                note = Note(lane, startTime, noteType, hitSound, endTime, sample)
                 hitObjects.append(note)
                 #print(hitObjects[-1])
         if timingMode:
             if ',' in line:
                 point = TimingPoint(*line.split(','))
-                if point.red:
+                if point.uninherited:
                     redPoints.append(point) #Create arrays to store information about timing points. Each row is a point.
                     #print(redPoints[-1])
                 #elif '0' in point.effects:
@@ -122,5 +122,5 @@ for beatmap in inputs:
     #Code to write the new hit objects into the output file
     for newNote in newHitObjects:
         laneNumber = (newNote.lane)*(512/outputKeymode)+2
-        output.write(str(laneNumber) + ',192,' + str(newNote.startTime) + ',' + str(newNote.noteType) + ',' + str(newNote.hitsound) + ',' + str(newNote.endTime) + str(newNote.sample) + '\n')
+        output.write(str(laneNumber) + ',192,' + str(newNote.startTime) + ',' + str(newNote.noteType) + ',' + str(newNote.hitSound) + ',' + str(newNote.endTime) + str(newNote.sample) + '\n')
     output.close()
